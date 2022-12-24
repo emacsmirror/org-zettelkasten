@@ -1,11 +1,14 @@
-;;; org-zettelkasten-consult.el --- Helper functions to use Zettelkasten in org-mode  -*- lexical-binding: t; -*-
+;;; org-zettelkasten-consult.el --- Consult integration for org-zettelkasten  -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2022-2023  Yann Herklotz
+;;
 ;; Author: Yann Herklotz <yann@ymhg.org>
-;; Created: 2022
-;; Version: 0.3.0
-;; Package-Requires: ((emacs "24.3") (consult "0.20"))
+;; Maintainer: Yann Herklotz <yann@ymhg.org>
 ;; Keywords: files, hypermedia, Org, notes
-;; Homepage: https://github.com/ymherklotz/emacs-zettelkasten
+;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
+;; Package-Requires: ((emacs "24.3") (org "9.0") (consult "0.20"))
+
+;; Version: 0.1.0
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,13 +25,13 @@
 
 ;;; Commentary:
 
-;; These functions allow for the use of the zettelkasten method in org-mode.
-;;
-;; It uses the CUSTOM_ID property to store a permanent ID to the note,
-;; which are organised in the same fashion as the notes by Luhmann.
+;; An extension to org-zettelkasten for consult.  This is mainly useful
+;; for a nicer interface to searching for back-references to the current
+;; identifier.
 
 ;;; Code:
 
+(require 'org)
 (require 'consult)
 
 (defun org-zettelkasten-consult-search-current-id ()

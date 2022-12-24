@@ -1,11 +1,14 @@
-;;; org-zettelkasten.el --- Helper functions to use Zettelkasten in org-mode  -*- lexical-binding: t; -*-
+;;; org-zettelkasten.el --- A Zettelkasten mode leveraging Org  -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2021-2023  Yann Herklotz
+;;
 ;; Author: Yann Herklotz <yann@ymhg.org>
-;; Created: 2021
-;; Version: 0.3.0
-;; Package-Requires: ((emacs "24.3") (org "9.0"))
+;; Maintainer: Yann Herklotz <yann@ymhg.org>
 ;; Keywords: files, hypermedia, Org, notes
-;; Homepage: https://github.com/ymherklotz/emacs-zettelkasten
+;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
+;; Package-Requires: ((emacs "24.3") (org "9.0"))
+
+;; Version: 0.4.0
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
