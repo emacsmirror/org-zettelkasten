@@ -141,6 +141,9 @@ directory."
   :lighter " ZK"
   :keymap org-zettelkasten-minor-mode-map)
 
+(with-eval-after-load 'consult (require 'org-zettelkasten-consult))
+(with-eval-after-load 'counsel (require 'org-zettelkasten-counsel))
+
 (provide 'org-zettelkasten)
 
 ;;; org-zettelkasten.el ends here
