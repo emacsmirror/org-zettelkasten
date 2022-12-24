@@ -1,0 +1,126 @@
+#+title: Org Zettelkasten Manual
+#+subtitle: Release {{{version}}}
+#+author: Yann Herklotz
+#+language: en
+
+#+texinfo: @insertcopying
+
+* Introduction
+:PROPERTIES:
+:DESCRIPTION: Getting started.
+:END:
+#+cindex: introduction
+
+Niklas Luhmann’s Zettelkasten is becoming increasingly popular for being a great
+note taking technique. However, it is often misunderstood as taking notes
+without any structure, whereas Luhmann actually structured his notes
+hierarchically, but also allowed for arbitrary links between notes. This post
+will describe the general note-taking workflow that Luhmann used and a practical
+implementation of the Zettelkasten in Emacs’ built-in org-mode, which I have
+been using regularly for my notes and has been working well.
+
+** Inserting new notes
+#+cindex: notes
+
+There are several possible notes that can be inserted into the Zettelkasten, but
+the need for them should arise naturally and one therefore doesn’t have to think
+about the separate types of notes directly. In addition to the following types
+of notes, Luhmann also had a separate box for references and notes about those
+references, however, these are not added to the Zettelkasten in my case because
+I felt like using tools specifically to keep track of references is a better
+system for me. This is mentioned further in the keeping track of references
+section.
+
+*** Permanent Notes
+#+cindex: notes
+
+Inserting new notes into the Zettelkasten can be done for any new piece of
+information one wants to permanently add to the tree of notes and therefore the
+network of notes. These are therefore called “permanent notes,” however, these
+are not the only notes that may appear in the network. The most important thing
+to take into consideration is that “permanent notes” should be completely in
+your own words, and express an idea that also links to other parts in the
+network. At the start it may be necessary to create a few topics that these
+notes fit into, however, eventually one should be able to find notes that are
+similar enough which this new note should follow.
+
+*** Index notes
+#+cindex: notes
+
+Apart from that, there can also be “index notes,” which try to give some
+structure to a subsection that may have gotten lost with all of the branches
+that may have been added. In addition to that, these may tie in other notes from
+other topics as well that relate to that topic. These can therefore just be
+added whenever you feel like there are too many notes for a subtopic and cannot
+keep track of all the possible links.
+
+** Keeping track of references
+#+cindex: references
+
+Luhmann kept track of references by inserting them into their own box in a
+linear structure and then referring to them by ID whenever they needed to be
+cited. These are often called “bibliographical notes.” In addition to that,
+notes that were not permanent and more relevant to a specific paper or book were
+also added separately to the other notes and were called “literature notes,” as
+these often contained summaries of the papers or books that were cited. Even
+though these were written in his own words, they only really were relevant to
+the paper itself as temporary notes, which could eventually be added as
+“permanent notes” into the Zettelkasten and linked to other notes when a
+narrative developed that did link this piece of knowledge to other notes.
+
+As references are quite separate to the other notes anyways, I prefer to keep
+them quite separate as well, and instead use standard bibliography management
+tools to keep track of all my references as well as linking notes to the
+references in the tool itself. In my case this is using ebib in Emacs, however,
+any alternative works as well, such as Zotero.
+
+In my notes, I then reference these by their bibtex identifier that is
+automatically generated, and which is later used when referencing the same
+literature in LaTeX, for example. This allows me to keep these notes quite
+separate and forces me to think about links when I do eventually add them to the
+network as “permanent notes.”
+
+* GNU Free Documentation License
+:PROPERTIES:
+:APPENDIX: t
+:DESCRIPTION: The license for this documentation.
+:END:
+
+#+include: fdl.org
+
+* Main Index
+:PROPERTIES:
+:INDEX:    cp
+:DESCRIPTION: An index of Org Zettelkasten concepts and features.
+:END:
+
+* Copying
+:PROPERTIES:
+:copying: t
+:END:
+
+This manual is for Org Zettelkasten version {{{version}}}.
+
+Copyright \copy 2022  Yann Herklotz.
+
+#+begin_quote
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover Texts being "A GNU Manual,"
+and with the Back-Cover Texts as in (a) below.  A copy of the license
+is included in the section entitled "GNU Free Documentation License."
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to copy and
+modify this GNU manual."
+#+end_quote
+
+* Export Setup :noexport:
+
+#+setupfile: doc-setup.org
+
+#+export_file_name: org-zettelkasten.texi
+
+#+texinfo_dir_category: Zettelkasten
+#+texinfo_dir_title: Org Zettelkasten
+#+texinfo_dir_desc: A Zettelkasten mode leveraging Org
