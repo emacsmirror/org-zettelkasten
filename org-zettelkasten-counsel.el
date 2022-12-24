@@ -34,6 +34,8 @@
 (require 'org)
 (require 'counsel)
 
+(eval-when-compile (defvar org-zettelkasten-directory))
+
 (defun org-zettelkasten-counsel-search-current-id ()
   "Use `counsel-rg' to search for the current ID in all files."
   (interactive)

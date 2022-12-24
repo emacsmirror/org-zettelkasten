@@ -34,6 +34,8 @@
 (require 'org)
 (require 'consult)
 
+(eval-when-compile (defvar org-zettelkasten-directory))
+
 (defun org-zettelkasten-consult-search-current-id ()
   "Use `consult-ripgrep' to search for the current ID in all files."
   (interactive)
