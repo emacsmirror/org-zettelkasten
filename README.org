@@ -1,0 +1,35 @@
+#+title: Zettelkasten for Org
+#+author: Yann Herklotz
+
+[[https://zettelkasten.de/][Zettelkasten]] is a note-taking technique designed to keep, and create new links
+between all the notes as they are written. This allows them to develop over
+time, link to various different topics and allow the notes to grow into a
+network over time. This helps draw connections between different fields.
+
+The idea of this mode is to integrate fully into Emacs Org mode, trying to
+leverage most of its preexisting features.  It is split into two modes, the main
+one being `org-zettelkasten`, and a secondary standalone mode called
+`zettelkasten` which is a minimal implementation of existing Zettelkasten modes.
+
+* How to use `org-zettelkasten`
+
+The method implemented in `org-zettelkasten` has been described in detail in a [blog
+article](https://yannherklotz.com/blog/2020-12-21-introduction-to-luhmanns-zettelkasten.html).  It
+leverages `org-mode` features such as `CUSTOM_ID`,
+
+*Manual Installation*
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "/path/to/org-zettelkasten.el")
+  (require 'org-zettelkasten)
+  (add-hook 'org-mode-hook #'org-zettelkasten-mode)
+#+end_src
+
+*~use-package~ from Melpa*
+
+#+begin_src emacs-lisp
+  (use-package org-zettelkasten
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook #'org-zettelkasten-mode))
+#+end_src
