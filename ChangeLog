@@ -1,8 +1,10 @@
-2022  Yann Herklotz  <git@ymhg.org>
+2022-12-24  Yann Herklotz  <git@ymhg.org>
 
-	* unreleased:
+	* v0.6.0:
 
 	(org): Add modified date which can be added on a before-save-hook.
+	(org): Add search back ends for optional consult and counsel.
+	(org): Add default search back end.
 
 2022-05-03  Yann Herklotz  <git@ymhg.org>
 
