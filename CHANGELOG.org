@@ -1,0 +1,42 @@
+#+title: Changelog
+#+author: Yann Herklotz
+#+email: git@yannherklotz.com
+
+* Version v0.6.1 (2022-12-24)
+
+- Create Org Zettelkasten manual.
+
+* Version v0.6.0 (2022-12-24)
+
+- Add modified date which can be added on a before-save-hook.
+- Add search back ends for optional consult and counsel.
+- Add default search back end.
+
+* Version v0.5.0 (2022-05-03)
+
+- Add date stamps to org-zettelkasten entries.
+
+* Version v0.4.0 (2021-10-02)
+
+- Remove counsel dependency and add function to README.
+
+* Version v0.3.0 (2021-08-27)
+
+- Add all dependencies and fix for Melpa release.
+
+* Version v0.2.0 (2021-01-22)
+
+- Add org-zettelkasten, a different mode which adds helper functions to org-mode
+  to use it as a Zettelkasten.
+
+* Version v0.1.1 (2020-12-08)
+
+- Implemented simple Zettelkasten method, which just contains chronological
+  notes and links to relate them.
+
+- (website): Better generation of website from the Zettelkasten.
+
+* Version v0.1.1 (2020-12-08)
+
+- Implement simple Zettelkasten method which also allows for a simple generation
+of a website.
