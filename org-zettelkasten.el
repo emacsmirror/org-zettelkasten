@@ -79,7 +79,7 @@ ends with a letter."
     (concat ident "1")))
 
 (defun org-zettelkasten-org-zettelkasten-create (incr newheading)
-  "Creat a new heading according to INCR and NEWHEADING.
+  "Create a new heading according to INCR and NEWHEADING.
 
 INCR: function to increment the ID by.
 NEWHEADING: function used to create the heading and set the current
@@ -93,12 +93,16 @@ NEWHEADING: function used to create the heading and set the current
 (defun org-zettelkasten-create-next ()
   "Create a heading at the same level as the current one."
   (org-zettelkasten-org-zettelkasten-create
-   #'org-zettelkasten-incr-id #'org-insert-heading))
+   #'org-zettelkasten-incr-id #'org-insert-heading-after-current))
 
 (defun org-zettelkasten-create-branch ()
   "Create a branching heading at a level lower than the current."
   (org-zettelkasten-org-zettelkasten-create
-   #'org-zettelkasten-branch-id (lambda () (org-insert-subheading ""))))
+   #'org-zettelkasten-branch-id
+   (lambda ()
+     (org-back-to-heading)
+     (org-forward-heading-same-level 1 t)
+     (org-insert-subheading ""))))
 
 (defun org-zettelkasten-create-dwim ()
   "Create the right type of heading based on current position."
