@@ -2,6 +2,15 @@
 #+author: Yann Herklotz
 #+email: git@yannherklotz.com
 
+* Version v0.6.2 (2022-12-26)
+
+- Add new customisation mapping for base identifiers to files
+  (~org-zettelkasten-mapping~).
+- Add function to go straight to an ID using only the number
+  (~org-zettelkasten-goto-id~).
+- Add Org agenda search function only for Org zettelkasten files
+  (~org-zettelkasten-agenda-search-view~).
+
 * Version v0.6.1 (2022-12-24)
 
 - Create Org Zettelkasten manual.

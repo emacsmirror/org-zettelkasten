@@ -8,7 +8,7 @@
 ;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
 ;; Package-Requires: ((emacs "24.3") (org "9.0"))
 
-;; Version: 0.6.1
+;; Version: 0.6.2
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
