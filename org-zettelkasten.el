@@ -156,10 +156,20 @@ directory."
   (let ((current-id (org-entry-get nil "CUSTOM_ID")))
     (lgrep (concat "[:[]." current-id "]") "*.org" org-zettelkasten-directory)))
 
+(defun org-zettelkasten-agenda-search-view ()
+  "Search for text using Org agenda in Zettelkasten files."
+  (interactive)
+  (let ((org-agenda-files
+         (mapcar #'org-zettelkasten-abs-file
+                 (mapcar #'cdr org-zettelkasten-mapping))))
+    (org-search-view)))
+
 (defvar org-zettelkasten-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "n" #'org-zettelkasten-create-dwim)
     (define-key map "C-s" #'org-zettelkasten-search-current-id)
+    (define-key map "s" #'org-zettelkasten-agenda-search-view)
+    (define-key map "C-g" #'org-zettelkasten-goto-id)
     map))
 
 (defvar org-zettelkasten-minor-mode-map
