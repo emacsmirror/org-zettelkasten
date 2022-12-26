@@ -43,12 +43,38 @@
   :type 'string
   :group 'org-zettelkasten)
 
+(defcustom org-zettelkasten-mapping nil
+  "Main zettelkasten directory."
+  :type '(alist :key-type (natnum :tag "Value")
+                :value-type (string :tag "File name"))
+  :group 'org-zettelkasten)
+
 (defcustom org-zettelkasten-prefix [(control ?c) ?y]
   "Prefix key to use for Zettelkasten commands in Zettelkasten minor mode.
 The value of this variable is checked as part of loading Zettelkasten mode.
 After that, changing the prefix key requires manipulating keymaps."
   :type 'key-sequence
   :group 'org-zettelkasten)
+
+(defun org-zettelkasten-abs-file (file)
+  "Return FILE name relative to `org-zettelkasten-directory'."
+  (expand-file-name file org-zettelkasten-directory))
+
+(defun org-zettelkasten-prefix (ident)
+  "Return the prefix identifier for IDENT.
+
+This function assumes that IDs will start with a number."
+  (when (string-match "^\\([0-9]*\\)" ident)
+    (string-to-number (match-string 1 ident))))
+
+(defun org-zettelkasten-goto-id (id)
+  "Go to an ID automatically."
+  (interactive "sID: #")
+  (let ((file (alist-get (org-zettelkasten-prefix id)
+                         org-zettelkasten-mapping)))
+    (org-link-open-from-string
+     (concat "[[file:" (org-zettelkasten-abs-file file)
+             "::#" id "]]"))))
 
 (defun org-zettelkasten-incr-id (ident)
   "Simple function to increment any IDENT.
