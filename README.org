@@ -1,6 +1,7 @@
-#+title: Zettelkasten for Org
 #+author: Yann Herklotz
 #+options: num:nil toc:nil
+
+* Zettelkasten for Org
 
 [[https://zettelkasten.de/][Zettelkasten]] is a note-taking technique designed to keep, and create new links
 between all the notes as they are written. This allows them to develop over
@@ -12,11 +13,10 @@ leverage most of its preexisting features.  It is split into two modes, the main
 one being =org-zettelkasten=, and a secondary standalone mode called
 =zettelkasten= which is a minimal implementation of existing Zettelkasten modes.
 
-* How to use =org-zettelkasten=
+** How to use =org-zettelkasten=
 
-The method implemented in =org-zettelkasten= has been described in detail in a [blog
-article](https://yannherklotz.com/blog/2020-12-21-introduction-to-luhmanns-zettelkasten.html).  It
-leverages Org features such as =CUSTOM_ID=.
+The method implemented in =org-zettelkasten= has been described in detail in a
+[[https://yannherklotz.com/blog/2020-12-21-introduction-to-luhmanns-zettelkasten.html][blog article]].  It leverages Org features such as =CUSTOM_ID=.
 
 *Manual Installation*
 
