@@ -1,14 +1,6 @@
 ;;; org-zettelkasten-consult.el --- Consult integration for org-zettelkasten  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022-2023  Yann Herklotz
-;;
-;; Author: Yann Herklotz <yann@ymhg.org>
-;; Maintainer: Yann Herklotz <yann@ymhg.org>
-;; Keywords: files, hypermedia, Org, notes
-;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
-;; Package-Requires: ((emacs "24.3") (org "9.0") (consult "0.20"))
-
-;; Version: 0.1.0
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,10 +23,10 @@
 
 ;;; Code:
 
-(require 'org)
-(require 'consult)
+(require 'org-zettelkasten)
 
-(eval-when-compile (defvar org-zettelkasten-directory))
+(eval-when-compile
+  (declare-function consult-ripgrep "ext:consult"))
 
 (defun org-zettelkasten-consult-search-current-id ()
   "Use `consult-ripgrep' to search for the current ID in all files."
