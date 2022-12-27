@@ -8,7 +8,7 @@
 ;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
 ;; Package-Requires: ((emacs "24.3") (org "9.0"))
 
-;; Version: 0.6.2
+;; Version: 0.7.0
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -145,9 +145,29 @@ NEWHEADING: function used to create the heading and set the current
 
 (defun org-zettelkasten-update-modified ()
   "Update the modified timestamp, which can be done on save."
-  (interactive)
   (org-set-property "modified" (format-time-string
                                 (org-time-stamp-format t t))))
+
+(defun org-zettelkasten-all-files ()
+  "Return all files in the Zettelkasten with full path."
+  (mapcar #'org-zettelkasten-abs-file
+          (mapcar #'cdr org-zettelkasten-mapping)))
+
+(defun org-zettelkasten-buffer ()
+  "Check if the current buffer belongs to the Zettelkasten."
+  (member (buffer-file-name) (org-zettelkasten-all-files)))
+
+(defun org-zettelkasten-setup ()
+  "Add functions to buffer local `before-save-hook' and activate
+`zettelkasten-mode'."
+  (add-hook
+   'org-mode-hook
+   (lambda ()
+     (when (org-zettelkasten-buffer)
+       (add-hook 'before-save-hook
+                 #'org-zettelkasten-update-modified
+                 nil 'local)
+       (org-zettelkasten-mode)))))
 
 (defun org-zettelkasten-search-current-id ()
   "Search for references to the current ID the `org-zettelkasten'
@@ -159,17 +179,15 @@ directory."
 (defun org-zettelkasten-agenda-search-view ()
   "Search for text using Org agenda in Zettelkasten files."
   (interactive)
-  (let ((org-agenda-files
-         (mapcar #'org-zettelkasten-abs-file
-                 (mapcar #'cdr org-zettelkasten-mapping))))
+  (let ((org-agenda-files (org-zettelkasten-all-files)))
     (org-search-view)))
 
 (defvar org-zettelkasten-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "n" #'org-zettelkasten-create-dwim)
-    (define-key map "C-s" #'org-zettelkasten-search-current-id)
+    (define-key map (kbd "C-s") #'org-zettelkasten-search-current-id)
     (define-key map "s" #'org-zettelkasten-agenda-search-view)
-    (define-key map "C-g" #'org-zettelkasten-goto-id)
+    (define-key map (kbd "C-g") #'org-zettelkasten-goto-id)
     map))
 
 (defvar org-zettelkasten-minor-mode-map
