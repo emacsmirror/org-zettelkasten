@@ -1,0 +1,23 @@
+image: alpine/latest
+packages:
+  - jq
+  - curl
+  - emacs-nox
+secrets:
+  - 1bacd0af-209e-4277-9309-cf9c188c3114
+sources:
+  - https://git.sr.ht/~ymherklotz/org-zettelkasten
+tasks:
+  - html: |
+      cd org-zettelkasten
+      emacs --batch --find-file README.org --eval '(progn (setq org-html-head-include-default-style nil)
+                                                          (setq org-html-head-include-scripts nil)
+                                                          (setq org-html-doctype "html5")
+                                                          (setq org-html-html5-fancy t)
+                                                          (setq org-html-postamble nil))' \
+                                                          --funcall org-html-export-to-html
+  - build: |
+      cd org-zettelkasten
+      set +x
+      . ~/.bearer-token
+      jq -sR '{ "query": "mutation UpdateRepo($id: Int!, $readme: String!) { updateRepository(id: $id, input: { readme: $readme }) { id } }", "variables": { "id": '241492', "readme": . } }' < README.html | curl --oauth2-bearer $BEARER_TOKEN -H "Content-Type: application/json" -d@- https://git.sr.ht/query >/dev/null 2>&1
