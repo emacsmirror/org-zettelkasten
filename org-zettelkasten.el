@@ -158,8 +158,11 @@ NEWHEADING: function used to create the heading and set the current
   (member (buffer-file-name) (org-zettelkasten-all-files)))
 
 (defun org-zettelkasten-setup ()
-  "Add functions to buffer local `before-save-hook' and activate
-`zettelkasten-mode'."
+  "Activate `zettelkasten-mode' with hooks.
+
+This function only activates `zettelkasten-mode' in Org.  It also
+adds `org-zettelkasten-update-modified' to buffer local
+`before-save-hook'."
   (add-hook
    'org-mode-hook
    (lambda ()
@@ -170,8 +173,7 @@ NEWHEADING: function used to create the heading and set the current
        (org-zettelkasten-mode)))))
 
 (defun org-zettelkasten-search-current-id ()
-  "Search for references to the current ID the `org-zettelkasten'
-directory."
+  "Search for references to ID in `org-zettelkasten-directory'."
   (interactive)
   (let ((current-id (org-entry-get nil "CUSTOM_ID")))
     (lgrep (concat "[:[]." current-id "]") "*.org" org-zettelkasten-directory)))
