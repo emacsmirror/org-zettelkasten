@@ -6,7 +6,7 @@
 ;; Maintainer: Yann Herklotz <yann@ymhg.org>
 ;; Keywords: files, hypermedia, Org, notes
 ;; Homepage: https://git.sr.ht/~ymherklotz/org-zettelkasten
-;; Package-Requires: ((emacs "24.3") (org "9.0"))
+;; Package-Requires: ((emacs "25.1") (org "9.3"))
 
 ;; Version: 0.7.0
 
