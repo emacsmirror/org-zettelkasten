@@ -2,13 +2,13 @@
 #+author: Yann Herklotz
 #+email: git@yannherklotz.com
 
-* Version v0.7.0 (2022-12-27)
+* Org Zettelkasten 0.7.0 (2022-12-27)
 
 - Improve initialisation of =org-zettelkasten= mode.  It will now only activate
   when editing a file that belongs to the Zettelkasten.
 - Fix keybindings by calling the ~kbd~ function.
 
-* Version v0.6.2 (2022-12-26)
+* Org Zettelkasten 0.6.2 (2022-12-26)
 
 - Add new customisation mapping for base identifiers to files
   (~org-zettelkasten-mapping~).
@@ -17,41 +17,41 @@
 - Add Org agenda search function only for Org zettelkasten files
   (~org-zettelkasten-agenda-search-view~).
 
-* Version v0.6.1 (2022-12-24)
+* Org Zettelkasten 0.6.1 (2022-12-24)
 
 - Create Org Zettelkasten manual.
 
-* Version v0.6.0 (2022-12-24)
+* Org Zettelkasten 0.6.0 (2022-12-24)
 
 - Add modified date which can be added on a before-save-hook.
 - Add search back ends for optional consult and counsel.
 - Add default search back end.
 
-* Version v0.5.0 (2022-05-03)
+* Org Zettelkasten 0.5.0 (2022-05-03)
 
 - Add date stamps to org-zettelkasten entries.
 
-* Version v0.4.0 (2021-10-02)
+* Org Zettelkasten 0.4.0 (2021-10-02)
 
 - Remove counsel dependency and add function to README.
 
-* Version v0.3.0 (2021-08-27)
+* Org Zettelkasten 0.3.0 (2021-08-27)
 
 - Add all dependencies and fix for Melpa release.
 
-* Version v0.2.0 (2021-01-22)
+* Org Zettelkasten 0.2.0 (2021-01-22)
 
 - Add org-zettelkasten, a different mode which adds helper functions to org-mode
   to use it as a Zettelkasten.
 
-* Version v0.1.1 (2020-12-08)
+* Org Zettelkasten 0.1.1 (2020-12-08)
 
 - Implemented simple Zettelkasten method, which just contains chronological
   notes and links to relate them.
 
 - (website): Better generation of website from the Zettelkasten.
 
-* Version v0.1.1 (2020-12-08)
+* Org Zettelkasten 0.1.1 (2020-12-08)
 
 - Implement simple Zettelkasten method which also allows for a simple generation
 of a website.
