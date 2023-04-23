@@ -283,7 +283,8 @@ adds `org-zettelkasten--update-modified' to buffer local
     (define-key map (kbd "s") #'org-zettelkasten-agenda-search-view)
     (define-key map (kbd "g") #'org-zettelkasten-goto-id)
     (define-key map (kbd "t") #'org-zettelkasten-new-topic)
-    map))
+    map)
+  "Keymap with default bindings.")
 
 (defvar org-zettelkasten-minor-mode-map
   (let ((map (make-sparse-keymap)))
