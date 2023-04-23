@@ -180,7 +180,7 @@ a next note present.
 
 This manual is for Org Zettelkasten version {{{version}}}.
 
-Copyright \copy 2022  Yann Herklotz.
+Copyright \copy 2023  Yann Herklotz.
 
 #+begin_quote
 Permission is granted to copy, distribute and/or modify this document
