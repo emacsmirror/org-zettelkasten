@@ -9,9 +9,11 @@ time, link to various different topics and allow the notes to grow into a
 network over time. This helps draw connections between different fields.
 
 The idea of this mode is to integrate fully into Emacs Org mode, trying to
-leverage most of its preexisting features.  It is split into two modes, the main
-one being =org-zettelkasten=, and a secondary standalone mode called
-=zettelkasten= which is a minimal implementation of existing Zettelkasten modes.
+leverage most of its preexisting features.
+
+More documentation can be found here:
+
+- [[https://doc.ymhg.org/org-zettelkasten/latest/][doc.ymhg.org/org-zettelkasten/latest/]]
 
 ** How to use =org-zettelkasten=
 
