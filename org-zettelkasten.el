@@ -253,23 +253,28 @@ adds `org-zettelkasten--update-modified' to buffer local
 ;;;###autoload
 (defun org-zettelkasten-new-topic (file-name)
   "Create a new topic in a file named FILE-NAME."
-  (interactive "sNew Topic Filename: ")
+  (interactive "sNew topic filename: ")
   (org-zettelkasten--ensure-read-mapping)
   (let ((new-id
          (if org-zettelkasten--mapping
              (1+ (apply #'max (mapcar (lambda (val) (car val))
                                       org-zettelkasten--mapping)))
-           1)))
-    (org-zettelkasten--add-topic new-id file-name)
-    (find-file file-name)
+           1))
+        (norm-file-name
+         (if (string-suffix-p ".org" file-name)
+             file-name
+           (concat file-name ".org"))))
+    (org-zettelkasten--add-topic new-id norm-file-name)
+    (find-file (org-zettelkasten--abs-file norm-file-name))
     (insert (format "#+title:
 
 * First Note
 :PROPERTIES:
 :CUSTOM_ID: %da
+:EXPORT_DATE: %s
 :END:
 
-" new-id))))
+" new-id (format-time-string (org-time-stamp-format t t))))))
 
 (defvar org-zettelkasten-mode-map
   (let ((map (make-sparse-keymap)))
