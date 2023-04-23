@@ -117,6 +117,48 @@ cannot keep track of all the possible links.
 - =org-zettelkasten-counsel-search-current-id= :: Alternative to
   =org-zettelkasten-search-current-id= using Ripgrep integration with Counsel.
 
+* Getting Started
+:PROPERTIES:
+:DESCRIPTION: Functions used and provided to navigate org-zettelkasten links.
+:END:
+#+cindex: getting-started
+
+To install =org-zettelkasten=, first make sure that you have the melpa
+repository set-up properly.  Then, the following =use-package= declaration will
+set-up =org-zettelkasten= including useful hooks to activate it when it enters a
+zettelkasten file.
+
+#+begin_src emacs-lisp
+  (use-package org-zettelkasten
+    :after org
+    :config
+    (org-zettelkasten-setup))
+#+end_src
+
+Once =org-zettelkasten= is installed properly, then you can run
+=org-zettelkasten-new-topic= to create your first topic file.  Make sure that
+the folder in =org-zettelkasten-directory= exists, which is set to
+=~/org-zettelkasten= by default.
+
+This should open a new file with the name that was given in the prompt, and it
+should to start experimenting with adding new notes.  In the current file there
+should already be a heading with an ID:
+
+#+begin_src org-mode
+  #+title:
+
+  * First Note
+  :PROPERTIES:
+  :CUSTOM_ID: 1a
+  :END:
+#+end_src
+
+Placing the point anywhere underneath the heading =* First Note=, and pressing
+=C-c y n= will create a next note with a new ID, and jump to it.  Going back to
+=* First Note= and pressing the keybinding again will create another note, but
+this time it is nested in the current note (branching) because there is already
+a next note present.
+
 * GNU Free Documentation License
 :PROPERTIES:
 :APPENDIX: t

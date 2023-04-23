@@ -43,18 +43,76 @@
   :type 'string
   :group 'org-zettelkasten)
 
-(defcustom org-zettelkasten-mapping nil
-  "Main zettelkasten directory."
-  :type '(alist :key-type (natnum :tag "Value")
-                :value-type (string :tag "File name"))
-  :group 'org-zettelkasten)
-
 (defcustom org-zettelkasten-prefix [(control ?c) ?y]
   "Prefix key to use for Zettelkasten commands in Zettelkasten minor mode.
 The value of this variable is checked as part of loading Zettelkasten mode.
 After that, changing the prefix key requires manipulating keymaps."
   :type 'key-sequence
   :group 'org-zettelkasten)
+
+(defcustom org-zettelkasten-mapping-file
+  (expand-file-name "org-zettelkasten-index" org-zettelkasten-directory)
+  "The file which contains mappings from indices to file-names."
+  :type 'string
+  :group 'org-zettelkasten)
+
+(defvar org-zettelkasten--mapping :unset
+  "Main mapping from indices to filenames in the Zettelkasten directory.")
+
+(defun org-zettelkasten--read-mapping ()
+  "Initialize `org-zettelkasten--mapping' using the contents of
+`org-zettelkasten-mapping-file'."
+  (let ((filename org-zettelkasten-mapping-file))
+    (setq org-zettelkasten--mapping
+          (when (file-exists-p filename)
+            (with-temp-buffer
+              (insert-file-contents filename)
+              (read (current-buffer)))))
+    (unless
+        (seq-every-p
+         (lambda (elt)
+           (and (numberp (car-safe elt)) (stringp (cdr-safe elt))))
+         org-zettelkasten--mapping)
+      (warn "Contents of %s are in wrong format, resetting" filename)
+      (setq org-zettelkasten--mapping :unset))))
+
+(defun org-zettelkasten--ensure-read-mapping ()
+  "Initialise `org-zettelkasten--mapping' if it is not yet initialised."
+  (when (eq org-zettelkasten--mapping :unset)
+    (org-zettelkasten--read-mapping)))
+
+(defun org-zettelkasten--write-mapping ()
+  "Save `org-zettelkasten--mapping' in `org-zettelkasten-mapping-file'."
+  (let ((filename org-zettelkasten-mapping-file))
+    (with-temp-buffer
+      (insert ";;; -*- lisp-data -*-\n")
+      (let ((print-length nil)
+            (print-level nil))
+        (pp org-zettelkasten--mapping (current-buffer)))
+      (write-region nil nil filename nil 'silent))))
+
+(defun org-zettelkasten--add-topic (index file-name &optional no-write)
+  "Add a topic to `org-zettelkasten--mapping' and optionally save it to disk.
+INDEX is the new index of the topic, it should not appear in
+`org-zettelkasten--mapping' yet.  FILE-NAME is the file name of
+the topic to be added.  NO-WRITE is an optional flag to to
+control whether the mapping should be saved to the file."
+  (org-zettelkasten--ensure-read-mapping)
+  (if (and (numberp index) (stringp file-name))
+      (add-to-list 'org-zettelkasten--mapping `(,index . ,file-name))
+    (warn "Adding topics in wrong format"))
+  (unless no-write
+    (org-zettelkasten--write-mapping)))
+
+(defun org-zettelkasten--remove-topic (index &optional no-write)
+  "Remove a topic from `org-zettelkasten--mapping' given by INDEX.
+Optionally, if NO-WRITE is set, write the new mapping to the
+file."
+  (org-zettelkasten--ensure-read-mapping)
+  (setq org-zettelkasten--mapping
+        (assq-delete-all index org-zettelkasten--mapping))
+  (unless no-write
+    (org-zettelkasten--write-mapping)))
 
 (defun org-zettelkasten--abs-file (file)
   "Return FILE name relative to `org-zettelkasten-directory'."
@@ -67,11 +125,13 @@ This function assumes that IDs will start with a number."
   (when (string-match "^\\([0-9]*\\)" ident)
     (string-to-number (match-string 1 ident))))
 
+;;;###autoload
 (defun org-zettelkasten-goto-id (id)
   "Go to an ID automatically."
   (interactive "sID: #")
+  (org-zettelkasten--ensure-read-mapping)
   (let ((file (alist-get (org-zettelkasten--ident-prefix id)
-                         org-zettelkasten-mapping)))
+                         org-zettelkasten--mapping)))
     (org-link-open-from-string
      (concat "[[file:" (org-zettelkasten--abs-file file)
              "::#" id "]]"))))
@@ -153,8 +213,9 @@ NEWHEADING: function used to create the heading and set the current POINT to
 
 (defun org-zettelkasten--all-files ()
   "Return all files in the Zettelkasten with full path."
+  (org-zettelkasten--ensure-read-mapping)
   (mapcar #'org-zettelkasten--abs-file
-          (mapcar #'cdr org-zettelkasten-mapping)))
+          (mapcar #'cdr org-zettelkasten--mapping)))
 
 (defun org-zettelkasten-buffer ()
   "Check if the current buffer belongs to the Zettelkasten."
@@ -175,27 +236,31 @@ adds `org-zettelkasten--update-modified' to buffer local
                  nil 'local)
        (org-zettelkasten-mode)))))
 
+;;;###autoload
 (defun org-zettelkasten-search-current-id ()
   "Search for references to ID in `org-zettelkasten-directory'."
   (interactive)
   (let ((current-id (org-entry-get nil "CUSTOM_ID")))
     (lgrep (concat "[:[]." current-id "]") "*.org" org-zettelkasten-directory)))
 
+;;;###autoload
 (defun org-zettelkasten-agenda-search-view ()
   "Search for text using Org agenda in Zettelkasten files."
   (interactive)
   (let ((org-agenda-files (org-zettelkasten--all-files)))
     (org-search-view)))
 
+;;;###autoload
 (defun org-zettelkasten-new-topic (file-name)
   "Create a new topic in a file named FILE-NAME."
   (interactive "sNew Topic Filename: ")
+  (org-zettelkasten--ensure-read-mapping)
   (let ((new-id
-         (if org-zettelkasten-mapping
+         (if org-zettelkasten--mapping
              (1+ (apply #'max (mapcar (lambda (val) (car val))
-                                      org-zettelkasten-mapping)))
+                                      org-zettelkasten--mapping)))
            1)))
-    (add-to-list 'org-zettelkasten-mapping `(,new-id . ,file-name))
+    (org-zettelkasten--add-topic new-id file-name)
     (find-file file-name)
     (insert (format "#+title:
 

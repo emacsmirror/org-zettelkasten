@@ -6,6 +6,8 @@
 
 - Added =org-zettelkasten-new-topic= to create a new topic file in the current
   Zettelkasten.
+- Added persistent storage for =org-zettelkasten--mapping= in
+  =org-zettelkasten-mapping-file=.
 
 * Org Zettelkasten 0.7.0 (2022-12-27)
 
