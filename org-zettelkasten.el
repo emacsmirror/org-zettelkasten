@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'org)
+(require 'cl-lib)
 
 (defgroup org-zettelkasten nil
   "Helper to work with zettelkasten notes."
@@ -140,9 +141,8 @@ This function assumes that IDs will start with a number."
   "Simple function to increment any IDENT.
 
 This might result in duplicate IDs though."
-  (let* ((ident-list (append nil ident nil))
-         (last-ident (last ident-list)))
-    (setcar last-ident (+ (car last-ident) 1))
+  (let ((ident-list (string-to-list ident)))
+    (cl-incf (car (last ident-list)))
     (concat ident-list)))
 
 (defun org-zettelkasten--incr-id-total (ident)
