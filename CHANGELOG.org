@@ -2,6 +2,11 @@
 #+author: Yann Herklotz
 #+email: git@yannherklotz.com
 
+* Unpublished
+
+- Added =org-zettelkasten-new-topic= to create a new topic file in the current
+  Zettelkasten.
+
 * Org Zettelkasten 0.7.0 (2022-12-27)
 
 - Improve initialisation of =org-zettelkasten= mode.  It will now only activate

@@ -56,11 +56,11 @@ After that, changing the prefix key requires manipulating keymaps."
   :type 'key-sequence
   :group 'org-zettelkasten)
 
-(defun org-zettelkasten-abs-file (file)
+(defun org-zettelkasten--abs-file (file)
   "Return FILE name relative to `org-zettelkasten-directory'."
   (expand-file-name file org-zettelkasten-directory))
 
-(defun org-zettelkasten-prefix (ident)
+(defun org-zettelkasten--ident-prefix (ident)
   "Return the prefix identifier for IDENT.
 
 This function assumes that IDs will start with a number."
@@ -70,13 +70,13 @@ This function assumes that IDs will start with a number."
 (defun org-zettelkasten-goto-id (id)
   "Go to an ID automatically."
   (interactive "sID: #")
-  (let ((file (alist-get (org-zettelkasten-prefix id)
+  (let ((file (alist-get (org-zettelkasten--ident-prefix id)
                          org-zettelkasten-mapping)))
     (org-link-open-from-string
-     (concat "[[file:" (org-zettelkasten-abs-file file)
+     (concat "[[file:" (org-zettelkasten--abs-file file)
              "::#" id "]]"))))
 
-(defun org-zettelkasten-incr-id (ident)
+(defun org-zettelkasten--incr-id (ident)
   "Simple function to increment any IDENT.
 
 This might result in duplicate IDs though."
@@ -85,7 +85,7 @@ This might result in duplicate IDs though."
     (setcar last-ident (+ (car last-ident) 1))
     (concat ident-list)))
 
-(defun org-zettelkasten-incr-id-total (ident)
+(defun org-zettelkasten--incr-id-total (ident)
   "A better way to incement numerical IDENT.
 
 This might still result in duplicate IDENTs for an IDENT that
@@ -96,35 +96,38 @@ ends with a letter."
         (let ((pre (match-string 1 ident))
               (post (match-string 2 ident)))
           (concat pre (number-to-string (+ 1 (string-to-number post))))))
-    (org-zettelkasten-incr-id ident)))
+    (org-zettelkasten--incr-id ident)))
 
-(defun org-zettelkasten-branch-id (ident)
+(defun org-zettelkasten--branch-id (ident)
   "Create a branch ID from IDENT."
   (if (string-match-p ".*[0-9]$" ident)
       (concat ident "a")
     (concat ident "1")))
 
-(defun org-zettelkasten-org-zettelkasten-create (incr newheading)
+(defun org-zettelkasten--create (incr newheading)
   "Create a new heading according to INCR and NEWHEADING.
 
 INCR: function to increment the ID by.
-NEWHEADING: function used to create the heading and set the current
-            POINT to it."
+NEWHEADING: function used to create the heading and set the current POINT to
+            it."
   (let* ((current-id (org-entry-get nil "CUSTOM_ID"))
          (next-id (funcall incr current-id)))
     (funcall newheading)
     (org-set-property "CUSTOM_ID" next-id)
-    (org-set-property "EXPORT_DATE" (format-time-string (org-time-stamp-format t t)))))
+    (org-set-property "EXPORT_DATE"
+                      (format-time-string (org-time-stamp-format t t)))))
 
 (defun org-zettelkasten-create-next ()
   "Create a heading at the same level as the current one."
-  (org-zettelkasten-org-zettelkasten-create
-   #'org-zettelkasten-incr-id #'org-insert-heading-after-current))
+  (interactive)
+  (org-zettelkasten--create
+   #'org-zettelkasten--incr-id #'org-insert-heading-after-current))
 
 (defun org-zettelkasten-create-branch ()
   "Create a branching heading at a level lower than the current."
-  (org-zettelkasten-org-zettelkasten-create
-   #'org-zettelkasten-branch-id
+  (interactive)
+  (org-zettelkasten--create
+   #'org-zettelkasten--branch-id
    (lambda ()
      (org-back-to-heading)
      (org-forward-heading-same-level 1 t)
@@ -143,32 +146,32 @@ NEWHEADING: function used to create the heading and set the current
         (org-zettelkasten-create-next)
       (org-zettelkasten-create-branch))))
 
-(defun org-zettelkasten-update-modified ()
+(defun org-zettelkasten--update-modified ()
   "Update the modified timestamp, which can be done on save."
   (org-set-property "modified" (format-time-string
                                 (org-time-stamp-format t t))))
 
-(defun org-zettelkasten-all-files ()
+(defun org-zettelkasten--all-files ()
   "Return all files in the Zettelkasten with full path."
-  (mapcar #'org-zettelkasten-abs-file
+  (mapcar #'org-zettelkasten--abs-file
           (mapcar #'cdr org-zettelkasten-mapping)))
 
 (defun org-zettelkasten-buffer ()
   "Check if the current buffer belongs to the Zettelkasten."
-  (member (buffer-file-name) (org-zettelkasten-all-files)))
+  (member (buffer-file-name) (org-zettelkasten--all-files)))
 
 (defun org-zettelkasten-setup ()
   "Activate `zettelkasten-mode' with hooks.
 
 This function only activates `zettelkasten-mode' in Org.  It also
-adds `org-zettelkasten-update-modified' to buffer local
+adds `org-zettelkasten--update-modified' to buffer local
 `before-save-hook'."
   (add-hook
    'org-mode-hook
    (lambda ()
      (when (org-zettelkasten-buffer)
        (add-hook 'before-save-hook
-                 #'org-zettelkasten-update-modified
+                 #'org-zettelkasten--update-modified
                  nil 'local)
        (org-zettelkasten-mode)))))
 
@@ -181,15 +184,35 @@ adds `org-zettelkasten-update-modified' to buffer local
 (defun org-zettelkasten-agenda-search-view ()
   "Search for text using Org agenda in Zettelkasten files."
   (interactive)
-  (let ((org-agenda-files (org-zettelkasten-all-files)))
+  (let ((org-agenda-files (org-zettelkasten--all-files)))
     (org-search-view)))
+
+(defun org-zettelkasten-new-topic (file-name)
+  "Create a new topic in a file named FILE-NAME."
+  (interactive "sNew Topic Filename: ")
+  (let ((new-id
+         (if org-zettelkasten-mapping
+             (1+ (apply #'max (mapcar (lambda (val) (car val))
+                                      org-zettelkasten-mapping)))
+           1)))
+    (add-to-list 'org-zettelkasten-mapping `(,new-id . ,file-name))
+    (find-file file-name)
+    (insert (format "#+title:
+
+* First Note
+:PROPERTIES:
+:CUSTOM_ID: %da
+:END:
+
+" new-id))))
 
 (defvar org-zettelkasten-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "n" #'org-zettelkasten-create-dwim)
+    (define-key map (kbd "n") #'org-zettelkasten-create-dwim)
     (define-key map (kbd "C-s") #'org-zettelkasten-search-current-id)
-    (define-key map "s" #'org-zettelkasten-agenda-search-view)
-    (define-key map (kbd "C-g") #'org-zettelkasten-goto-id)
+    (define-key map (kbd "s") #'org-zettelkasten-agenda-search-view)
+    (define-key map (kbd "g") #'org-zettelkasten-goto-id)
+    (define-key map (kbd "t") #'org-zettelkasten-new-topic)
     map))
 
 (defvar org-zettelkasten-minor-mode-map

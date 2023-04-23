@@ -20,6 +20,7 @@ used by using as much of Emacs' built-in Org as possible.
 
 ** Inserting new notes
 #+cindex: notes
+#+cindex: create-notes
 
 There are several possible notes that can be inserted into the Zettelkasten, but
 the need for them should arise naturally and one therefore does not have to
@@ -28,6 +29,7 @@ the fantastic [[https://joostkremers.github.io/ebib/][ebib]] package.
 
 *** Permanent Notes
 #+cindex: notes
+#+cindex: permanent-notes
 
 Inserting new notes into the Zettelkasten can be done for any new piece of
 information one wants to permanently add to the tree of notes and therefore the
@@ -41,6 +43,7 @@ similar enough which this new note should follow.
 
 *** Index notes
 #+cindex: notes
+#+cindex: index-notes
 
 Apart from that, there can also be “index notes,” which try to give some
 structure to a subsection that may have gotten lost with all of the branches
@@ -48,6 +51,71 @@ that may have been added.  In addition to that, these may tie in other notes
 from other topics as well that relate to that topic.  These can therefore just
 be added whenever you feel like there are too many notes for a subtopic and
 cannot keep track of all the possible links.
+
+* Variables for Customisation
+:PROPERTIES:
+:DESCRIPTION: Variables which are available for customisation.
+:END:
+#+cindex: customisation
+
+- =org-zettelkasten-directory= :: This is the path to the root of the
+  zettelkasten directory.  By default this is set to: ="~/org-zettelkasten"=.
+
+- =org-zettelkasten-mapping= :: A mapping from indices to filenames, which is
+  used to keep track of which org-mode files are part of the zettelkasten
+  directory.  This is currently a variable because the set of files should be
+  quite static, and there should not be that many topics.
+
+- =org-zettelkasten-prefix= :: Prefix used for org-zettelkasten default
+  bindings.
+
+- =org-zettelkasten-mode-map= :: Bound to the prefix, and contains the default
+  bindings of Org Zettelkasten functions.
+
+* Creating New Topics and Notes
+:PROPERTIES:
+:DESCRIPTION: Creating new top-level topics to contain new notes.
+:END:
+#+cindex: topics
+#+cindex: notes
+
+- =org-zettelkasten-new-topic= :: Create a new topic file in the current
+  Zettelkasten directory.  Bound to =t= by default.
+
+- =org-zettelkasten-create-dwim= :: Create a new note under the current note, by
+  either introducing a new level in the current note, or continuing at the same
+  level if the current note is the last.  Bound to =n= by default.
+
+* Navigation Org Zettelkasten Links
+:PROPERTIES:
+:DESCRIPTION: Functions used and provided to navigate org-zettelkasten links.
+:END:
+#+cindex: navigation
+
+- =org-zettelkasten-goto-id= :: Go to a specific ID in the zettelkasten
+  directory.  This will automatically jump to the right file and then go to the
+  id.  Bound to =g= by default.
+
+- =org-zettelkasten-search-current-id= :: Search the current ID in the
+  org-zettelkasten directory using =grep=.  This will essentially find backlinks
+  to the current note.  Bound to =C-s= by default.
+
+- =org-zettelkasten-agenda-search-view= :: Search all the whole Org Zettelkasten
+  directory using =agenda-search=.  Bound to =s= by default.
+
+** Navigation With Consult or Counsel
+:PROPERTIES:
+:DESCRIPTION: Navigating org-zettelkasten using the optional consult or counsel package.
+:END:
+#+cindex: consult
+#+cindex: counsel
+#+cindex: navigation
+
+- =org-zettelkasten-consult-search-current-id= :: Alternative to
+  =org-zettelkasten-search-current-id= using Ripgrep integration with Consult.
+
+- =org-zettelkasten-counsel-search-current-id= :: Alternative to
+  =org-zettelkasten-search-current-id= using Ripgrep integration with Counsel.
 
 * GNU Free Documentation License
 :PROPERTIES:
