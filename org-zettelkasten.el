@@ -227,6 +227,7 @@ NEWHEADING: function used to create the heading and set the current POINT to
 This function only activates `zettelkasten-mode' in Org.  It also
 adds `org-zettelkasten--update-modified' to buffer local
 `before-save-hook'."
+  (org-zettelkasten--ensure-read-mapping)
   (add-hook
    'org-mode-hook
    (lambda ()
