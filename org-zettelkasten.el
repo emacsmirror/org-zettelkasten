@@ -1,11 +1,12 @@
 ;;; org-zettelkasten.el --- A Zettelkasten mode leveraging Org  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2021-2023  Yann Herklotz
-;;
-;; Author: Yann Herklotz <yann@ymhg.org>
-;; Maintainer: Yann Herklotz <yann@ymhg.org>
+
+;; Author: Yann Herklotz <git@yannherklotz.com>
+;; Maintainer: Yann Herklotz <git@yannherklotz.com>
 ;; Keywords: files, hypermedia, Org, notes
 ;; Homepage: https://sr.ht/~ymherklotz/org-zettelkasten
+;; Mailing-List: https://lists.sr.ht/~ymherklotz/org-zettelkasten
 ;; Package-Requires: ((emacs "25.1") (org "9.3"))
 
 ;; Version: 0.8.0
@@ -137,26 +138,38 @@ This function assumes that IDs will start with a number."
      (concat "[[file:" (org-zettelkasten--abs-file file)
              "::#" id "]]"))))
 
+(defun org-zettelkasten--incr-alpha (ident-part)
+  "Increments a string of lowercase letters in IDENT-PART."
+  (let ((carry 0)
+        (new-list nil)
+        (rev-list (reverse (string-to-list ident-part))))
+    (let ((new-val (dolist (ident-el
+                            (cons (+ (car rev-list) 1) (cdr rev-list))
+                            (concat new-list))
+                     (let ((incr-val (+ ident-el carry)))
+                       (if (<= incr-val ?z)
+                           (progn
+                             (setq new-list (cons incr-val new-list))
+                             (setq carry 0))
+                         (setq new-list (cons ?a new-list))
+                         (setq carry 1))))))
+      (if (< 0 carry) (concat "a" new-val) new-val))))
+
 (defun org-zettelkasten--incr-id (ident)
-  "Simple function to increment any IDENT.
-
-This might result in duplicate IDs though."
-  (let ((ident-list (string-to-list ident)))
-    (cl-incf (car (last ident-list)))
-    (concat ident-list)))
-
-(defun org-zettelkasten--incr-id-total (ident)
   "A better way to incement numerical IDENT.
 
 This might still result in duplicate IDENTs for an IDENT that
 ends with a letter."
-  (if (string-match-p "\\(.*[a-z]\\)\\([0-9]+\\)$" ident)
+  (if (string-match-p "\\(.*[a-z]\\)?\\([0-9]+\\)$" ident)
       (progn
-        (string-match "\\(.*[a-z]\\)\\([0-9]+\\)$" ident)
+        (string-match "\\(.*[a-z]\\)?\\([0-9]+\\)$" ident)
         (let ((pre (match-string 1 ident))
               (post (match-string 2 ident)))
           (concat pre (number-to-string (+ 1 (string-to-number post))))))
-    (org-zettelkasten--incr-id ident)))
+    (string-match "\\(.*[0-9]\\)?\\([a-z]+\\)$" ident)
+    (let ((pre (match-string 1 ident))
+          (post (match-string 2 ident)))
+      (concat pre (org-zettelkasten--incr-alpha post)))))
 
 (defun org-zettelkasten--branch-id (ident)
   "Create a branch ID from IDENT."
