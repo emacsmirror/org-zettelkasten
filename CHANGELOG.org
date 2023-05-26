@@ -4,6 +4,8 @@
 
 * Unpublished
 
+* Org Zettelkasten 0.8.0 (2023-05-26)
+
 - Replaced original partial ID incrementation with new total function.
 - Added full support for ID increments, and added ERT tests for the feature.
 - Added =org-zettelkasten-new-topic= to create a new topic file in the current
