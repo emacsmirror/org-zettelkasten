@@ -9,7 +9,7 @@
 ;; Mailing-List: https://lists.sr.ht/~ymherklotz/org-zettelkasten
 ;; Package-Requires: ((emacs "25.1") (org "9.3"))
 
-;; Version: 0.8.0-dev
+;; Version: 0.8.0
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
