@@ -204,6 +204,7 @@ NEWHEADING: function used to create the heading and set the current POINT to
    (lambda ()
      (org-back-to-heading)
      (org-forward-heading-same-level 1 t)
+     (end-of-line 0)
      (org-insert-subheading ""))))
 
 (defun org-zettelkasten-create-dwim ()
