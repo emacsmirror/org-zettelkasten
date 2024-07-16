@@ -207,6 +207,14 @@ NEWHEADING: function used to create the heading and set the current POINT to
      (end-of-line 0)
      (org-insert-subheading ""))))
 
+(defun org-zettelkasten--invalid-entry ()
+  "Checks if the current entry under the point is a valid entry or not.
+
+It should return nil if the entry is valid, and anything else if the
+entry is invalid."
+  (let ((ident (org-entry-get nil "CUSTOM_ID")))
+    (or (not ident) (string-match-p ".*zzz$" ident))))
+
 (defun org-zettelkasten-create-dwim ()
   "Create the right type of heading based on current position."
   (interactive)
@@ -215,8 +223,11 @@ NEWHEADING: function used to create the heading and set the current POINT to
                          (point)))
         (next-point (save-excursion
                       (org-forward-heading-same-level 1 t)
-                      (point))))
-    (if (= current-point next-point)
+                      (point)))
+        (invalid-entry (save-excursion
+                         (org-forward-heading-same-level 1 t)
+                         (org-zettelkasten--invalid-entry))))
+    (if (or (= current-point next-point) invalid-entry)
         (org-zettelkasten-create-next)
       (org-zettelkasten-create-branch))))
 
