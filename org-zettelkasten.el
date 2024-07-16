@@ -202,10 +202,8 @@ NEWHEADING: function used to create the heading and set the current POINT to
   (org-zettelkasten--create
    #'org-zettelkasten--branch-id
    (lambda ()
-     (org-back-to-heading)
-     (org-forward-heading-same-level 1 t)
-     (end-of-line 0)
-     (org-insert-subheading ""))))
+     (org-insert-heading-after-current)
+     (org-do-demote))))
 
 (defun org-zettelkasten--invalid-entry ()
   "Checks if the current entry under the point is a valid entry or not.
