@@ -305,6 +305,7 @@ adds `org-zettelkasten--update-modified' to buffer local
 (defvar org-zettelkasten-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "n") #'org-zettelkasten-create-dwim)
+    (define-key map (kbd "e") #'org-zettelkasten-create-branch)
     (define-key map (kbd "C-s") #'org-zettelkasten-search-current-id)
     (define-key map (kbd "s") #'org-zettelkasten-agenda-search-view)
     (define-key map (kbd "g") #'org-zettelkasten-goto-id)
