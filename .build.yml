@@ -5,6 +5,8 @@ packages:
   - emacs-nox
 secrets:
   - 1bacd0af-209e-4277-9309-cf9c188c3114
+  - 2242b628-e3e5-4fac-8219-109db488e85a
+  - 79455ed8-d9a2-4c0b-9844-6da5e03460e4
 sources:
   - https://git.sr.ht/~ymherklotz/org-zettelkasten
 tasks:
@@ -16,8 +18,18 @@ tasks:
                                                           (setq org-html-html5-fancy t)
                                                           (setq org-html-postamble nil))' \
                                                           --funcall org-html-export-to-html
-  - build: |
+  - doc-html: |
+      cd org-zettelkasten/doc
+      make org-zettelkasten.html
+      mv org-zettelkasten.html index.html
+  - upload-readme: |
       cd org-zettelkasten
       set +x
       . ~/.bearer-token
       jq -sR '{ "query": "mutation UpdateRepo($id: Int!, $readme: String!) { updateRepository(id: $id, input: { readme: $readme }) { id } }", "variables": { "id": '241492', "readme": . } }' < README.html | curl --oauth2-bearer $BEARER_TOKEN -H "Content-Type: application/json" -d@- https://git.sr.ht/query >/dev/null 2>&1
+  - upload-doc: |
+      cd org-zettelkasten/doc
+      set +x
+      sshopts="ssh -o StrictHostKeyChecking=no"
+      SERVER=$(cat ~/.yannherklotz.com.server.txt)
+      rsync --rsh="$sshopts" -avzP index.html $SERVER:/var/www/htdocs/docs.ymhg.org/org-zettelkasten/latest/

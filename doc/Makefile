@@ -7,6 +7,8 @@ TEXI2HTML := makeinfo --html --number-sections --css-ref "https://www.gnu.org/so
 TEXI2PDF := texi2pdf
 TEXI2INFO := makeinfo
 
+all: org-zettelkasten.html
+
 %.html: %.texi
 	$(TEXI2HTML) --no-split -o $@ $<
 
